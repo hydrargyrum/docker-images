@@ -8,12 +8,18 @@ cache:
     paths:
       - ".cache/pip"
 
-build-image-gitolite:
+.build-image: &build-template
     stage: "build"
     image: "docker:20.10.16"
     services:
       - "docker:20.10.16-dind"
     script:
+      - "cd $IMAGE"
       - "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
-      - "docker build -t $CI_REGISTRY_IMAGE/gitolite:$CI_COMMIT_SHA -f Dockerfile ."
-      - "docker push $CI_REGISTRY_IMAGE/gitolite:$CI_COMMIT_SHA"
+      - "docker build -t $CI_REGISTRY_IMAGE/$IMAGE:$CI_COMMIT_SHA -f Dockerfile ."
+      - "docker push $CI_REGISTRY_IMAGE/$IMAGE:$CI_COMMIT_SHA"
+
+build-image-gitolite:
+    variables:
+      IMAGE: gitolite
+    <<: *build-template
