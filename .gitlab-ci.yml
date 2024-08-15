@@ -10,8 +10,6 @@ cache:
 
 build-image-gitolite:
     stage: "build"
-    needs:
-      - "lint"
     image: "docker:20.10.16"
     services:
       - "docker:20.10.16-dind"
