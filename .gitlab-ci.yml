@@ -23,3 +23,8 @@ build-image-gitolite:
     variables:
       IMAGE: gitolite
     <<: *build-template
+
+build-image-strelay:
+    variables:
+      IMAGE: strelay
+    <<: *build-template
