@@ -1,14 +1,8 @@
 variables:
-    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-    PYTHONDEVMODE: "1"
     RUNNER_GENERATE_ARTIFACTS_METADATA: "true"
     SLSA_PROVENANCE_SCHEMA_VERSION: "v1"
 
-cache:
-    paths:
-      - ".cache/pip"
-
-.build-image: &build-template
+build-image:
     stage: "build"
     image: "docker:20.10.16"
     services:
@@ -18,18 +12,9 @@ cache:
       - "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
       - "docker build -t $CI_REGISTRY_IMAGE/$IMAGE:$CI_COMMIT_SHA -f Dockerfile ."
       - "docker push $CI_REGISTRY_IMAGE/$IMAGE:$CI_COMMIT_SHA"
-
-build-image-gitolite:
-    variables:
-      IMAGE: gitolite
-    <<: *build-template
-
-build-image-strelay:
-    variables:
-      IMAGE: strelay
-    <<: *build-template
-
-build-image-foldingathome:
-    variables:
-      IMAGE: foldingathome
-    <<: *build-template
+    parallel:
+        matrix:
+          - IMAGE:
+              - foldingathome
+              - strelay
+              - gitolite
