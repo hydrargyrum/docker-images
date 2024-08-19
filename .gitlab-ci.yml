@@ -28,3 +28,8 @@ build-image-strelay:
     variables:
       IMAGE: strelay
     <<: *build-template
+
+build-image-foldingathome:
+    variables:
+      IMAGE: foldingathome
+    <<: *build-template
