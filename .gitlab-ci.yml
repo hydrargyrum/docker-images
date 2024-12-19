@@ -11,7 +11,7 @@ variables:
       - "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
       - "docker build --pull -t $CI_REGISTRY_IMAGE/$IMAGE:$CI_COMMIT_SHA -f Dockerfile ."
       - "docker push $CI_REGISTRY_IMAGE/$IMAGE:$CI_COMMIT_SHA"
-      - "tagpush () { docker tag $CI_REGISTRY_IMAGE/$IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/$IMAGE:$1 && docker push $CI_REGISTRY_IMAGE/$IMAGE:$1 }"
+      - "tagpush () { docker tag $CI_REGISTRY_IMAGE/$IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE/$IMAGE:$1 && docker push $CI_REGISTRY_IMAGE/$IMAGE:$1 ; }"
       - "tagpush latest"
       - "tagpush $(echo $CI_JOB_STARTED_AT | sed s/:/-/g)"
     parallel:
